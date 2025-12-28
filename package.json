@@ -1,0 +1,21 @@
+{
+  "name": "ctc-bff",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/arjanoop27/ctc-bff.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/arjanoop27/ctc-bff/issues"
+  },
+  "homepage": "https://github.com/arjanoop27/ctc-bff#readme"
+}
