@@ -1,9 +1,11 @@
 const { createApp } = require('./app');
 const { env } = require('./config/env');
 const { connectDb } = require('./config/db');
+const { bootstrap } = require('./config/bootstrap');
 
 async function start() {
   await connectDb(env.MONGODB_URI);
+  await bootstrap();
 
   const app = createApp();
 

@@ -22,7 +22,9 @@ const userContextSchema = new mongoose.Schema(
   { timestamps: true },
 );
 
-const UserContext = mongoose.model('UserContext', userContextSchema);
+const UserContext =
+  mongoose.models.UserContext ||
+  mongoose.model('UserContext', userContextSchema);
 
 const UserContextSwaggerSchema = {
   type: 'object',

@@ -3,6 +3,8 @@ const { z } = require('zod');
 const { User } = require('../models/user');
 const jwt = require('jsonwebtoken');
 const { env } = require('../config/env');
+const { UserContext } = require('../models/UserContext');
+const { assignModeForNewUser } = require('../services/modeAssigner');
 
 const registerSchema = z.object({
   email: z.string().email(),
@@ -32,11 +34,20 @@ async function register(req, res) {
     passwordHash,
   });
 
+  const assignedMode = await assignModeForNewUser();
+
+  await UserContext.create({
+    _id: user._id,
+    isAdmin: false,
+    ctcMode: assignedMode,
+  });
+
   return res.status(201).json({
     ok: true,
     data: {
       id: user._id,
       email: user.email,
+      ctcMode: assignedMode,
       createdAt: user.createdAt,
     },
   });
@@ -70,6 +81,8 @@ async function me(req, res) {
     ok: true,
     data: {
       userId: req.user.userId,
+      isAdmin: req.user.isAdmin,
+      ctcMode: req.user.ctcMode,
     },
   });
 }

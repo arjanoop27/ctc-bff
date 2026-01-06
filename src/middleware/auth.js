@@ -1,7 +1,8 @@
 const jwt = require('jsonwebtoken');
 const { env } = require('../config/env');
+const { UserContext } = require('../models/userContext');
 
-function authMiddleware(req, res, next) {
+async function authMiddleware(req, res, next) {
   const header = req.headers.authorization;
 
   if (!header || !header.startsWith('Bearer ')) {
@@ -16,8 +17,13 @@ function authMiddleware(req, res, next) {
   try {
     const payload = jwt.verify(token, env.JWT_SECRET);
 
+    const userId = payload.userId;
+    const ctx = await UserContext.findById(userId).lean();
+
     req.user = {
       userId: payload.userId,
+      isAdmin: ctx?.isAdmin === true,
+      ctcMode: ctx?.ctcMode || 'vanilla',
     };
 
     next();
