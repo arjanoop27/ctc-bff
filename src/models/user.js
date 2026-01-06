@@ -1,29 +1,29 @@
-const mongoose = require("mongoose");
-const { randomUUID } = require("crypto");
+const mongoose = require('mongoose');
+const { randomUUID } = require('crypto');
 
 const userSchema = new mongoose.Schema(
-    {
-        _id: {
-            type: String,
-            default: () => randomUUID(),
-        },
-        email: {
-            type: String,
-            required: true,
-            unique: true,
-            lowercase: true,
-            trim: true,
-            index: true,
-        },
-        passwordHash: {
-            type: String,
-            required: true,
-        },
+  {
+    _id: {
+      type: String,
+      default: () => randomUUID(),
     },
-    {
-        timestamps: true,
-        _id: false,
-    }
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+      lowercase: true,
+      trim: true,
+      index: true,
+    },
+    passwordHash: {
+      type: String,
+      required: true,
+    },
+  },
+  {
+    timestamps: true,
+    _id: false,
+  },
 );
 
-module.exports = mongoose.model("User", userSchema);
+module.exports = mongoose.model('User', userSchema);

@@ -1,17 +1,17 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
 async function connectDb(mongoUri) {
-    if (!mongoUri) {
-        throw new Error("MONGODB_URI is missing");
-    }
+  if (!mongoUri) {
+    throw new Error('MONGODB_URI is missing');
+  }
 
-    mongoose.set("strictQuery", true);
+  mongoose.set('strictQuery', true);
 
-    await mongoose.connect(mongoUri, {
-        autoIndex: true,
-    });
+  await mongoose.connect(mongoUri, {
+    autoIndex: true,
+  });
 
-    console.log("MongoDB connected!");
+  console.log('MongoDB connected!');
 }
 
 module.exports = { connectDb };
