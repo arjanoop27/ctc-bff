@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt');
 const { z } = require('zod');
-const User = require('../models/user');
+const {User} = require('../models/user');
 const jwt = require('jsonwebtoken');
 const { env } = require('../config/env');
 
@@ -11,7 +11,7 @@ const registerSchema = z.object({
 
 const loginSchema = z.object({
   email: z.string().email(),
-  password: z.string().min(1),
+  password: z.string().min(8),
 });
 
 async function register(req, res) {
@@ -35,7 +35,7 @@ async function register(req, res) {
   return res.status(201).json({
     ok: true,
     data: {
-      id: user._id, // UUID
+      id: user._id,
       email: user.email,
       createdAt: user.createdAt,
     },
