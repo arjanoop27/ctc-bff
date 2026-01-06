@@ -1,5 +1,5 @@
 const swaggerJSDoc = require('swagger-jsdoc');
-const schemas = require("./swagger.schemas");
+const schemas = require('./swagger.schemas');
 
 const swaggerDefinition = {
   openapi: '3.0.0',
@@ -17,7 +17,7 @@ const swaggerDefinition = {
         bearerFormat: 'JWT',
       },
     },
-    schemas
+    schemas,
   },
   security: [],
   paths: {

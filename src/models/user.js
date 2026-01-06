@@ -29,21 +29,21 @@ const userSchema = new mongoose.Schema(
 const User = mongoose.models.User || mongoose.model('User', userSchema);
 
 const UserSwaggerSchema = {
-    type: "object",
-    properties: {
-        _id: { type: "string", format: "uuid" },
-        email: { type: "string", format: "email" },
-        passwordHash: {
-            type: "string",
-            description: "bcrypt hash",
-        },
-        createdAt: { type: "string", format: "date-time" },
-        updatedAt: { type: "string", format: "date-time" },
+  type: 'object',
+  properties: {
+    _id: { type: 'string', format: 'uuid' },
+    email: { type: 'string', format: 'email' },
+    passwordHash: {
+      type: 'string',
+      description: 'bcrypt hash',
     },
-    required: ["_id", "email", "passwordHash", "createdAt", "updatedAt"],
+    createdAt: { type: 'string', format: 'date-time' },
+    updatedAt: { type: 'string', format: 'date-time' },
+  },
+  required: ['_id', 'email', 'passwordHash', 'createdAt', 'updatedAt'],
 };
 
 module.exports = {
-    User,
-    UserSwaggerSchema,
+  User,
+  UserSwaggerSchema,
 };

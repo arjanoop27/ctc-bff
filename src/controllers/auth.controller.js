@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt');
 const { z } = require('zod');
-const {User} = require('../models/user');
+const { User } = require('../models/user');
 const jwt = require('jsonwebtoken');
 const { env } = require('../config/env');
 

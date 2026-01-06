@@ -1,7 +1,7 @@
-const { UserSwaggerSchema } = require("../models/User");
-const {UserContextSwaggerSchema} = require("../models/userContext");
+const { UserSwaggerSchema } = require('../models/User');
+const { UserContextSwaggerSchema } = require('../models/userContext');
 
 module.exports = {
-    User: UserSwaggerSchema,
-    UserContext: UserContextSwaggerSchema
+  User: UserSwaggerSchema,
+  UserContext: UserContextSwaggerSchema,
 };
