@@ -6,7 +6,7 @@ const validate = (schema) => (req, res, next) => {
     return res.status(400).json({
       ok: false,
       error: 'Invalid request body',
-      details: err.errors,
+      details: err,
     });
   }
 };

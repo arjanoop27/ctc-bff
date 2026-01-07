@@ -7,6 +7,10 @@ const settingsSchema = new mongoose.Schema(
       default: 'ctc-settings',
     },
 
+    activeNarrativeConfigId: { type: String, default: '' },
+
+    fallbackNarrativeConfigId: { type: String, default: '' },
+
     assignmentStrategy: {
       type: String,
       enum: ['fixed', 'random', 'iterative'],
@@ -39,6 +43,8 @@ const SettingsSwaggerSchema = {
   type: 'object',
   properties: {
     _id: { type: 'string', example: 'ctc-settings' },
+    activeNarrativeConfigId: { type: 'string', format: 'uuid', example: '' },
+    fallbackNarrativeConfigId: { type: 'string', format: 'uuid', example: '' },
     assignmentStrategy: {
       type: 'string',
       enum: ['fixed', 'random', 'iterative'],

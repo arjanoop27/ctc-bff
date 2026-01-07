@@ -6,6 +6,8 @@ async function bootstrap() {
     {
       $setOnInsert: {
         _id: 'ctc-settings',
+        activeNarrativeConfigId: '',
+        fallbackNarrativeConfigId: '',
         assignmentStrategy: 'fixed',
         fixedMode: 'vanilla',
         iterativeModes: ['narrative', 'vanilla'],

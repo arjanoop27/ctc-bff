@@ -6,8 +6,11 @@ const adminOnly = require('../middleware/admin');
 const validate = require('../middleware/validate');
 
 const { Settings } = require('../models/Settings');
+const { NarrativeConfig } = require('../models/NarrativeConfig');
 
 const router = express.Router();
+
+router.use('/', require('./narrativeConfig.admin.routes'));
 
 router.get(
   '/mode-setting',
@@ -24,12 +27,16 @@ router.get(
 );
 
 // PUT update settings (strategy rules)
-const updateSettingsSchema = z.object({
-  assignmentStrategy: z.enum(['fixed', 'random', 'iterative']),
-  fixedMode: z.enum(['vanilla', 'narrative']).optional(),
-  iterativeModes: z.array(z.enum(['vanilla', 'narrative'])).optional(),
-  resetIterativeIndex: z.boolean().optional(), // optional helper
-});
+const updateSettingsSchema = z
+  .object({
+    assignmentStrategy: z.enum(['fixed', 'random', 'iterative']).optional(),
+    fixedMode: z.enum(['vanilla', 'narrative']).optional(),
+    iterativeModes: z.array(z.enum(['vanilla', 'narrative'])).optional(),
+    resetIterativeIndex: z.boolean().optional(),
+    activeNarrativeConfigId: z.string().uuid().optional(),
+    fallbackNarrativeConfigId: z.string().uuid().optional(),
+  })
+  .strict();
 
 router.put(
   '/mode-setting',
@@ -57,16 +64,46 @@ router.put(
         }
       }
 
-      const update = {
-        assignmentStrategy: body.assignmentStrategy,
-      };
+      if (body.activeNarrativeConfigId) {
+        const exists = await NarrativeConfig.exists({
+          _id: body.activeNarrativeConfigId,
+        });
+        if (!exists) {
+          return res.status(400).json({
+            ok: false,
+            error: 'activeNarrativeConfigId does not exist',
+          });
+        }
+      }
+
+      if (body.fallbackNarrativeConfigId) {
+        const exists = await NarrativeConfig.exists({
+          _id: body.fallbackNarrativeConfigId,
+        });
+        if (!exists) {
+          return res.status(400).json({
+            ok: false,
+            error: 'fallbackNarrativeConfigId does not exist',
+          });
+        }
+      }
+
+      const update = {};
+      if (body.assignmentStrategy)
+        update.assignmentStrategy = body.assignmentStrategy;
       if (body.fixedMode) update.fixedMode = body.fixedMode;
       if (body.iterativeModes) update.iterativeModes = body.iterativeModes;
       if (
-        body.resetIterativeIndex === true ||
+        body.resetIterativeIndex === true &&
         body.assignmentStrategy === 'iterative'
       ) {
         update.iterativeIndex = 0;
+      }
+      if (body.activeNarrativeConfigId) {
+        update.activeNarrativeConfigId = body.activeNarrativeConfigId;
+      }
+      if (body.fallbackNarrativeConfigId) {
+        update.fallbackNarrativeConfigId = body.fallbackNarrativeConfigId;
       }
 
       const settings = await Settings.findOneAndUpdate(
