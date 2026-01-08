@@ -6,6 +6,7 @@ async function bootstrap() {
     {
       $setOnInsert: {
         _id: 'ctc-settings',
+        activeCtcTheme: '00000000-0000-0000-0000-000000000000',
         assignmentStrategy: 'fixed',
         fixedMode: 'vanilla',
         iterativeModes: ['narrative', 'vanilla'],
