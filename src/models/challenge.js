@@ -1,5 +1,5 @@
-const { randomUUID } = require('crypto');
 const mongoose = require('mongoose');
+const { randomUUID } = require('crypto');
 
 const challengeSchema = new mongoose.Schema(
   {
@@ -32,7 +32,7 @@ const ChallengeSwaggerSchema = {
     createdAt: { type: 'string', format: 'date-time' },
     updatedAt: { type: 'string', format: 'date-time' },
   },
-  required: ['_id', 'description', 'createdAt', 'updatedAt'],
+  required: ['_id', 'description'],
 };
 
 module.exports = {

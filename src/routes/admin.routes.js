@@ -6,6 +6,7 @@ const adminOnly = require('../middleware/admin');
 const validate = require('../middleware/validate');
 
 const { Settings } = require('../models/Settings');
+const { CtcTheme } = require('../models/ctcTheme');
 
 const router = express.Router();
 
@@ -25,10 +26,11 @@ router.get(
 
 // PUT update settings (strategy rules)
 const updateSettingsSchema = z.object({
-  assignmentStrategy: z.enum(['fixed', 'random', 'iterative']),
+  activeCtcTheme: z.string().optional(),
+  assignmentStrategy: z.enum(['fixed', 'random', 'iterative']).optional(),
   fixedMode: z.enum(['vanilla', 'narrative']).optional(),
   iterativeModes: z.array(z.enum(['vanilla', 'narrative'])).optional(),
-  resetIterativeIndex: z.boolean().optional(), // optional helper
+  resetIterativeIndex: z.boolean().optional(),
 });
 
 router.put(
@@ -57,13 +59,26 @@ router.put(
         }
       }
 
-      const update = {
-        assignmentStrategy: body.assignmentStrategy,
-      };
+      if (body.activeCtcTheme) {
+        const exists = await CtcTheme.exists({
+          _id: body.activeCtcTheme,
+        });
+        if (!exists) {
+          return res.status(400).json({
+            ok: false,
+            error: 'Theme does not exist',
+          });
+        }
+      }
+
+      const update = {};
+      if (body.assignmentStrategy)
+        update.assignmentStrategy = body.assignmentStrategy;
       if (body.fixedMode) update.fixedMode = body.fixedMode;
       if (body.iterativeModes) update.iterativeModes = body.iterativeModes;
+      if (body.activeCtcTheme) update.activeCtcTheme = body.activeCtcTheme;
       if (
-        body.resetIterativeIndex === true ||
+        body.resetIterativeIndex === true &&
         body.assignmentStrategy === 'iterative'
       ) {
         update.iterativeIndex = 0;

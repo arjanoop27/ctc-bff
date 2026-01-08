@@ -7,6 +7,11 @@ const settingsSchema = new mongoose.Schema(
       default: 'ctc-settings',
     },
 
+    activeCtcTheme: {
+      type: String,
+      default: '',
+    },
+
     assignmentStrategy: {
       type: String,
       enum: ['fixed', 'random', 'iterative'],
@@ -39,6 +44,7 @@ const SettingsSwaggerSchema = {
   type: 'object',
   properties: {
     _id: { type: 'string', example: 'ctc-settings' },
+    activeCtcTheme: { type: 'string', format: 'uuid', example: '' },
     assignmentStrategy: {
       type: 'string',
       enum: ['fixed', 'random', 'iterative'],
