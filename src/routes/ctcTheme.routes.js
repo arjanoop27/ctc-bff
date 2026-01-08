@@ -6,6 +6,8 @@ const upload = require('../middleware/uploadJson');
 const {
   importThemeFromJson,
   exportThemeAsJson,
+  deleteCtcThemeHandler,
+  getAllThemes,
 } = require('../controllers/ctcTheme.controller');
 
 const router = express.Router();
@@ -19,5 +21,9 @@ router.post(
 );
 
 router.get('/:id/export', auth, adminOnly, exportThemeAsJson);
+
+router.delete('/:id', auth, adminOnly, deleteCtcThemeHandler);
+
+router.get('/', auth, adminOnly, getAllThemes);
 
 module.exports = router;
