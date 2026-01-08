@@ -5,7 +5,7 @@ const { CtcThemeSwaggerSchema } = require('../models/ctcTheme');
 const { MissionSwaggerSchema } = require('../models/Mission');
 const { SubMissionSwaggerSchema } = require('../models/subMission');
 const { NarrationSwaggerSchema } = require('../models/narration');
-const { NarationHintSwaggerSchema } = require('../models/narrationHint');
+const { NarrationHintSwaggerSchema } = require('../models/narrationHint');
 
 module.exports = {
   User: UserSwaggerSchema,
@@ -15,5 +15,5 @@ module.exports = {
   Mission: MissionSwaggerSchema,
   SubMission: SubMissionSwaggerSchema,
   Narration: NarrationSwaggerSchema,
-  NarrationHint: NarationHintSwaggerSchema,
+  NarrationHint: NarrationHintSwaggerSchema,
 };

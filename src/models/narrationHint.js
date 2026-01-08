@@ -32,4 +32,20 @@ const NarrationHint =
   mongoose.models.NarrationHint ||
   mongoose.model('NarrationHint', narrationHintSchema);
 
-module.exports = { NarrationHint };
+const NarrationHintSwaggerSchema = {
+  type: 'object',
+  properties: {
+    _id: { type: 'string', format: 'uuid' },
+    narrationId: { type: 'string', format: 'uuid' },
+    subMissionId: { type: 'string', format: 'uuid' },
+
+    message: { type: 'string' },
+    order: { type: 'string' },
+
+    createdAt: { type: 'string', format: 'date-time' },
+    updatedAt: { type: 'string', format: 'date-time' },
+  },
+  required: ['_id', 'subMissionId'],
+};
+
+module.exports = { NarrationHint, NarrationHintSwaggerSchema };
