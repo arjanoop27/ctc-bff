@@ -28,6 +28,12 @@ function createApp() {
   // eslint-disable-next-line no-unused-vars
   app.use((err, req, res, next) => {
     console.error(err);
+    if (err && err.message && err.message.includes('Only .json files')) {
+      return res.status(400).json({ ok: false, error: err.message });
+    }
+    if (err && err.code === 'LIMIT_FILE_SIZE') {
+      return res.status(400).json({ ok: false, error: 'File too large' });
+    }
     res.status(500).json({ error: 'Internal Server Error' });
   });
 
