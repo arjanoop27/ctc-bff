@@ -9,6 +9,7 @@ const { assignModeForNewUser } = require('../services/modeAssigner');
 const registerSchema = z.object({
   email: z.string().email(),
   password: z.string().min(8),
+  username: z.string().min(5),
 });
 
 const loginSchema = z.object({
@@ -17,7 +18,7 @@ const loginSchema = z.object({
 });
 
 async function register(req, res) {
-  const { email, password } = req.body;
+  const { email, password, username } = req.body;
 
   const existing = await User.findOne({ email });
   if (existing) {
@@ -32,6 +33,7 @@ async function register(req, res) {
   const user = await User.create({
     email,
     passwordHash,
+    username,
   });
 
   const assignedMode = await assignModeForNewUser();
@@ -48,6 +50,7 @@ async function register(req, res) {
       id: user._id,
       email: user.email,
       ctcMode: assignedMode,
+      username: user.username,
       createdAt: user.createdAt,
     },
   });
@@ -66,9 +69,15 @@ async function login(req, res) {
     return res.status(401).json({ ok: false, error: 'Invalid credentials' });
   }
 
-  const token = jwt.sign({ userId: user._id }, env.JWT_SECRET, {
-    expiresIn: env.JWT_EXPIRES_IN,
-  });
+  const userContext = await UserContext.findOne({ email });
+
+  const token = jwt.sign(
+    { userId: user._id, username: user.username, ctcMode: userContext.ctcMode },
+    env.JWT_SECRET,
+    {
+      expiresIn: env.JWT_EXPIRES_IN,
+    },
+  );
 
   return res.json({
     ok: true,
