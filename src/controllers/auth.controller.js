@@ -119,11 +119,12 @@ async function login(req, res) {
 }
 
 async function me(req, res) {
+  const user = await User.findById(req.user.userId).lean();
   return res.json({
     ok: true,
     data: {
       userId: req.user.userId,
-      isAdmin: req.user.isAdmin,
+      username: user.username,
       ctcMode: req.user.ctcMode,
     },
   });
