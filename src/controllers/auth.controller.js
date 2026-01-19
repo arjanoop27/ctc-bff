@@ -69,7 +69,7 @@ async function login(req, res) {
     return res.status(401).json({ ok: false, error: 'Invalid credentials' });
   }
 
-  const userContext = await UserContext.findOne({ email });
+  const userContext = await UserContext.findOne({ _id:user._id });
 
   const token = jwt.sign(
     { userId: user._id, username: user.username, ctcMode: userContext.ctcMode },
@@ -78,6 +78,13 @@ async function login(req, res) {
       expiresIn: env.JWT_EXPIRES_IN,
     },
   );
+
+  res.cookie('access_token', token, {
+    httpOnly: true,
+    secure: false,
+    sameSite: 'lax',
+    maxAge: 15 * 60 * 1000,
+  });
 
   return res.json({
     ok: true,
@@ -96,10 +103,20 @@ async function me(req, res) {
   });
 }
 
+function logout(req, res) {
+  res.clearCookie('access_token', {
+    httpOnly: true,
+    sameSite: 'lax',
+  });
+
+  return res.json({ ok: true });
+}
+
 module.exports = {
   register,
   registerSchema,
   login,
   loginSchema,
+  logout,
   me,
 };
