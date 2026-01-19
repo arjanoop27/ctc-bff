@@ -7,8 +7,8 @@ function getTokenFromRequest(req) {
   if (cookieToken) return cookieToken;
 
   const header = req.headers.authorization;
-  if (header && header.startsWith("Bearer ")) {
-    return header.split(" ")[1];
+  if (header && header.startsWith('Bearer ')) {
+    return header.split(' ')[1];
   }
 
   return null;
@@ -20,7 +20,7 @@ async function authMiddleware(req, res, next) {
   if (!token) {
     return res.status(401).json({
       ok: false,
-      error: "Missing or invalid Authentication token",
+      error: 'Missing or invalid Authentication token',
     });
   }
 
