@@ -75,7 +75,7 @@ async function login(req, res) {
     { userId: user._id, username: user.username, ctcMode: userContext.ctcMode },
     env.JWT_SECRET,
     {
-      expiresIn: env.JWT_EXPIRES_IN,
+      expiresIn: env.JWT_EXPIRES_IN_MIN,
     },
   );
 
@@ -83,7 +83,7 @@ async function login(req, res) {
     httpOnly: true,
     secure: false,
     sameSite: 'lax',
-    maxAge: 15 * 60 * 1000,
+    maxAge: env.JWT_EXPIRES_IN_MIN * 60 * 1000,
   });
 
   return res.json({
