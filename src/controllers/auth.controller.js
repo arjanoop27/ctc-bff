@@ -90,7 +90,7 @@ async function login(req, res) {
   const refreshTokenPlain = generateRefreshTokenPlain();
   const refreshTokenHash = await hashRefreshToken(refreshTokenPlain);
 
- await RefreshToken.create([
+  await RefreshToken.create([
     {
       userId: user._id,
       tokenHash: refreshTokenHash,
