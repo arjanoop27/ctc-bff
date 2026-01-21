@@ -8,6 +8,7 @@ const {
 const { deleteCtcTheme } = require('../services/deleteCtcThemeService');
 
 const { CtcTheme } = require('../models/CtcTheme');
+const { Settings } = require('../models/settings');
 
 async function importThemeFromJson(req, res, next) {
   try {
@@ -94,9 +95,25 @@ async function getAllThemes(req, res, next) {
   }
 }
 
+async function getActiveTheme(req, res, next) {
+  try {
+    const settings = await Settings.findById('ctc-settings').lean();
+    const activeThemeId = settings?.activeCtcTheme;
+    const data = await CtcTheme.findById(activeThemeId, {
+      _id: 0,
+      name: 1,
+      onboardingMessages: 1,
+    }).lean();
+    return res.json({ ok: true, data });
+  } catch (err) {
+    return next(err);
+  }
+}
+
 module.exports = {
   importThemeFromJson,
   exportThemeAsJson,
   deleteCtcThemeHandler,
   getAllThemes,
+  getActiveTheme,
 };

@@ -8,6 +8,7 @@ const {
   exportThemeAsJson,
   deleteCtcThemeHandler,
   getAllThemes,
+  getActiveTheme,
 } = require('../controllers/ctcTheme.controller');
 
 const router = express.Router();
@@ -25,5 +26,7 @@ router.get('/:id/export', auth, adminOnly, exportThemeAsJson);
 router.delete('/:id', auth, adminOnly, deleteCtcThemeHandler);
 
 router.get('/', auth, adminOnly, getAllThemes);
+
+router.get('/active', auth, getActiveTheme);
 
 module.exports = router;
