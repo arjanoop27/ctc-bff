@@ -5,6 +5,7 @@ const { Mission } = require('../models/Mission');
 const { SubMission } = require('../models/SubMission');
 const { Narration } = require('../models/Narration');
 const { NarrationHint } = require('../models/NarrationHint');
+const { Settings } = require('../models/Settings');
 
 async function deleteCtcTheme(themeId, { debug = false } = {}) {
   const session = await mongoose.startSession();
@@ -26,6 +27,12 @@ async function deleteCtcTheme(themeId, { debug = false } = {}) {
       if (!theme) {
         const err = new Error('Theme not found');
         err.code = 'THEME_NOT_FOUND';
+        throw err;
+      }
+      const settings = await Settings.findById('ctc-settings').session(session);
+      if (settings.activeCtcTheme === themeId) {
+        const err = new Error('Active theme cannot be deleted');
+        err.code = 'THEME_IS_ACTIVE';
         throw err;
       }
       if (debug) console.log('[delete] theme', themeId);
