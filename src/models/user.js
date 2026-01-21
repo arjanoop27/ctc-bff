@@ -19,6 +19,10 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    username: {
+      type: String,
+      required: true,
+    },
   },
   {
     timestamps: true,
@@ -37,10 +41,18 @@ const UserSwaggerSchema = {
       type: 'string',
       description: 'bcrypt hash',
     },
+    username: { type: 'string' },
     createdAt: { type: 'string', format: 'date-time' },
     updatedAt: { type: 'string', format: 'date-time' },
   },
-  required: ['_id', 'email', 'passwordHash', 'createdAt', 'updatedAt'],
+  required: [
+    '_id',
+    'email',
+    'passwordHash',
+    'username',
+    'createdAt',
+    'updatedAt',
+  ],
 };
 
 module.exports = {

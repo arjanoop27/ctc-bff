@@ -7,9 +7,38 @@ const challengeSchema = new mongoose.Schema(
       type: String,
       default: () => randomUUID(),
     },
+    name: {
+      type: String,
+      required: true,
+      trim: true,
+      minlength: 1,
+    },
     description: {
       type: String,
       required: true,
+      trim: true,
+      minlength: 1,
+    },
+    category: {
+      type: String,
+      required: true,
+      trim: true,
+      minlength: 1,
+    },
+    difficulty: {
+      type: Number,
+      required: true,
+      min: 1,
+      max: 4,
+    },
+    tags: {
+      type: [String],
+      default: [],
+      validate: {
+        validator: (arr) =>
+          Array.isArray(arr) && arr.every((t) => typeof t === 'string'),
+        message: 'tags must be an array of strings',
+      },
     },
   },
   {
@@ -18,6 +47,9 @@ const challengeSchema = new mongoose.Schema(
   },
 );
 
+challengeSchema.index({ category: 1, difficulty: 1 });
+challengeSchema.index({ tags: 1 });
+
 const Challenge =
   mongoose.models.Challenge || mongoose.model('Challenge', challengeSchema);
 
@@ -25,14 +57,24 @@ const ChallengeSwaggerSchema = {
   type: 'object',
   properties: {
     _id: { type: 'string', format: 'uuid' },
-    description: {
-      type: 'string',
-      description: 'Challenge Description',
+    name: { type: 'string', description: 'Challenge name' },
+    description: { type: 'string', description: 'Challenge description' },
+    category: { type: 'string', description: 'Challenge category' },
+    difficulty: {
+      type: 'number',
+      description: 'Difficulty level (1-10)',
+      minimum: 1,
+      maximum: 10,
+    },
+    tags: {
+      type: 'array',
+      items: { type: 'string' },
+      description: 'Tags for filtering/search',
     },
     createdAt: { type: 'string', format: 'date-time' },
     updatedAt: { type: 'string', format: 'date-time' },
   },
-  required: ['_id', 'description'],
+  required: ['_id', 'name', 'description', 'category', 'difficulty', 'tags'],
 };
 
 module.exports = {

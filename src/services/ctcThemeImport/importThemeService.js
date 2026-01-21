@@ -24,7 +24,11 @@ async function importTheme(body, { debug = false } = {}) {
     await session.withTransaction(async () => {
       const counts = { missions: 0, subMissions: 0, narrations: 0, hints: 0 };
 
-      const theme = await createTheme(session, payload.name);
+      const theme = await createTheme(
+        session,
+        payload.name,
+        payload.onboardingMessages,
+      );
       if (debug) console.log('[import] theme', theme._id);
 
       for (const m of payload.missions) {

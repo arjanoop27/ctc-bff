@@ -4,8 +4,18 @@ const { SubMission } = require('../../models/SubMission');
 const { Narration } = require('../../models/Narration');
 const { NarrationHint } = require('../../models/NarrationHint');
 
-async function createTheme(session, name) {
-  const [theme] = await CtcTheme.create([{ name }], { session });
+async function createTheme(session, name, onboardingMessages = []) {
+  const [theme] = await CtcTheme.create(
+    [
+      {
+        name,
+        onboardingMessages: Array.isArray(onboardingMessages)
+          ? onboardingMessages
+          : [],
+      },
+    ],
+    { session },
+  );
   return theme;
 }
 

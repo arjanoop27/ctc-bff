@@ -20,6 +20,9 @@ function buildExportJson({ theme, missions, subMissions, narrations, hints }) {
   const exportJson = {
     id: theme._id,
     name: theme.name,
+    onboardingMessages: Array.isArray(theme.onboardingMessages)
+      ? theme.onboardingMessages
+      : [],
     missions: missions.map((m) => {
       const subs = subMissionsByMissionId.get(m._id) || [];
 

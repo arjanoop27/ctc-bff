@@ -2,6 +2,7 @@ const { z } = require('zod');
 
 const importThemeSchema = z.object({
   name: z.string().min(1),
+  onboardingMessages: z.array(z.string().min(1)).optional().default([]),
   missions: z
     .array(
       z.object({
