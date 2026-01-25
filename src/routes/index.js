@@ -5,6 +5,7 @@ const authRoutes = require('./auth.routes');
 const adminRoutes = require('./admin.routes');
 const challengeRoutes = require('./challenge.routes');
 const themeRoutes = require('./ctcTheme.routes');
+const missionRoutes = require('./mission.routes');
 
 const router = express.Router();
 
@@ -13,5 +14,6 @@ router.use('/api/auth', authRoutes);
 router.use('/api/admin', adminRoutes);
 router.use('/api/challenges', challengeRoutes);
 router.use('/api/theme', themeRoutes);
+router.use('/api/missions', missionRoutes);
 
 module.exports = router;
