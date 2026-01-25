@@ -30,7 +30,7 @@ async function deleteCtcTheme(themeId, { debug = false } = {}) {
         throw err;
       }
       const settings = await Settings.findById('ctc-settings').session(session);
-      if (settings.activeCtcTheme === themeId) {
+      if (settings?.activeCtcTheme === themeId) {
         const err = new Error('Active theme cannot be deleted');
         err.code = 'THEME_IS_ACTIVE';
         throw err;
