@@ -1,4 +1,5 @@
 const { NarrationHint } = require('../models/narrationHint');
+const { HintUsageMetric } = require('../models/hintUsageMetric');
 
 async function getNarrationHintsBySubMissionId(req, res, next) {
   try {
@@ -18,7 +19,12 @@ async function getNarrationHintsBySubMissionId(req, res, next) {
 async function getNarrationHintsById(req, res, next) {
   try {
     const { id } = req.params;
-    // TODO: Add logic to save in hint used history
+    const { userId } = req.user;
+    await HintUsageMetric.create({
+      userId,
+      hintId: id,
+      usedAt: new Date(),
+    });
     const narrationHints = await NarrationHint.findById(id).lean();
     return res.json({ ok: true, data: narrationHints });
   } catch (err) {

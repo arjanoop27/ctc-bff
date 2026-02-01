@@ -4,6 +4,7 @@ async function createChallenge(req, res, next) {
   try {
     const doc = await Challenge.create({
       name: req.body.name,
+      key: req.body.key,
       description: req.body.description,
       category: req.body.category,
       difficulty: req.body.difficulty,
@@ -23,6 +24,7 @@ async function updateChallenge(req, res, next) {
     // Only allow updating known fields
     const update = {};
     if (req.body.name !== undefined) update.name = req.body.name;
+    if (req.body.key !== undefined) update.key = req.body.key;
     if (req.body.description !== undefined)
       update.description = req.body.description;
     if (req.body.category !== undefined) update.category = req.body.category;
