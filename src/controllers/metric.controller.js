@@ -1,5 +1,6 @@
 const { ChallengeMetric } = require('../models/challengeMetric');
 const { Challenge } = require('../models/challenge');
+const {emitToUser} = require("../config/socket");
 
 async function startChallenge(req, res, next) {
   try {
@@ -102,6 +103,10 @@ async function completeChallenge(req, res, next) {
 
     openAttempt.completedAt = now;
     await openAttempt.save();
+
+    emitToUser(userId, 'challengeSolved', {
+      challengeId: String(solvedChallengeId)
+    });
 
     return res.status(200).json({
       ok: true,
