@@ -1,4 +1,5 @@
 const { Challenge } = require('../models/Challenge');
+const {getCompletedChallengeIdsByUser} = require("../services/progressMetricService");
 
 async function createChallenge(req, res, next) {
   try {
@@ -50,9 +51,14 @@ async function updateChallenge(req, res, next) {
 
 async function getAllChallenges(req, res, next) {
   try {
-    const docs = await Challenge.find({}).sort({ createdAt: 1 }).lean();
-
-    return res.json({ ok: true, data: docs });
+    const docs = await Challenge.find({}, { key: 0 }).sort({ createdAt: 1 }).lean();
+    const completedChallengeIds = await getCompletedChallengeIdsByUser(req.user.userId);
+    const completedChallengeSet = new Set(completedChallengeIds);
+    const data = docs.map((c) => ({
+      ...c,
+      status: completedChallengeSet.has(c._id) ? 'completed' : 'active',
+    }));
+    return res.json({ ok: true, data: data });
   } catch (err) {
     return next(err);
   }
