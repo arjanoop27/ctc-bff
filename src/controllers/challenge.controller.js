@@ -1,9 +1,11 @@
 const { Challenge } = require('../models/Challenge');
+const {getCompletedChallengeIdsByUser} = require("../services/progressMetricService");
 
 async function createChallenge(req, res, next) {
   try {
     const doc = await Challenge.create({
       name: req.body.name,
+      key: req.body.key,
       description: req.body.description,
       category: req.body.category,
       difficulty: req.body.difficulty,
@@ -23,6 +25,7 @@ async function updateChallenge(req, res, next) {
     // Only allow updating known fields
     const update = {};
     if (req.body.name !== undefined) update.name = req.body.name;
+    if (req.body.key !== undefined) update.key = req.body.key;
     if (req.body.description !== undefined)
       update.description = req.body.description;
     if (req.body.category !== undefined) update.category = req.body.category;
@@ -48,9 +51,14 @@ async function updateChallenge(req, res, next) {
 
 async function getAllChallenges(req, res, next) {
   try {
-    const docs = await Challenge.find({}).sort({ createdAt: 1 }).lean();
-
-    return res.json({ ok: true, data: docs });
+    const docs = await Challenge.find({}, { key: 0 }).sort({ createdAt: 1 }).lean();
+    const completedChallengeIds = await getCompletedChallengeIdsByUser(req.user.userId);
+    const completedChallengeSet = new Set(completedChallengeIds);
+    const data = docs.map((c) => ({
+      ...c,
+      status: completedChallengeSet.has(c._id) ? 'completed' : 'active',
+    }));
+    return res.json({ ok: true, data: data });
   } catch (err) {
     return next(err);
   }

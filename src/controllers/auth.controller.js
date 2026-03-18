@@ -126,6 +126,7 @@ async function me(req, res) {
       userId: req.user.userId,
       username: user.username,
       ctcMode: req.user.ctcMode,
+      token: req.user.token
     },
   });
 }

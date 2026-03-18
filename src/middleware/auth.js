@@ -34,6 +34,7 @@ async function authMiddleware(req, res, next) {
       userId: payload.userId,
       isAdmin: ctx?.isAdmin === true,
       ctcMode: ctx?.ctcMode || 'vanilla',
+      token: token,
     };
 
     next();

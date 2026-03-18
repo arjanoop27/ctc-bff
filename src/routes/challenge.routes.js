@@ -15,6 +15,7 @@ const router = express.Router();
 
 const createSchema = z.object({
   name: z.string().min(1),
+  key: z.string().min(1),
   description: z.string().min(1),
   category: z.string().min(1),
   difficulty: z.number().int().min(1).max(4),
@@ -24,6 +25,7 @@ const createSchema = z.object({
 const updateSchema = z
   .object({
     name: z.string().min(1).optional(),
+    key: z.string().min(1).optional(),
     description: z.string().min(1).optional(),
     category: z.string().min(1).optional(),
     difficulty: z.number().int().min(1).max(4).optional(),

@@ -7,6 +7,12 @@ const challengeSchema = new mongoose.Schema(
       type: String,
       default: () => randomUUID(),
     },
+    key: {
+      type: String,
+      required: true,
+      trim: true,
+      minlength: 1,
+    },
     name: {
       type: String,
       required: true,
@@ -49,6 +55,7 @@ const challengeSchema = new mongoose.Schema(
 
 challengeSchema.index({ category: 1, difficulty: 1 });
 challengeSchema.index({ tags: 1 });
+challengeSchema.index({ key: 1 });
 
 const Challenge =
   mongoose.models.Challenge || mongoose.model('Challenge', challengeSchema);
