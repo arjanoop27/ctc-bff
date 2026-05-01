@@ -7,8 +7,9 @@ let io;
 
 function initSocket(httpServer) {
     io = new Server(httpServer, {
+        path: '/ctc/socket.io',
         cors: {
-            origin: ['http://localhost:4200', 'http://localhost:3000'],
+            origin: true,
             credentials: true,
         },
     });
