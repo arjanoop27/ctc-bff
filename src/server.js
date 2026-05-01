@@ -13,7 +13,7 @@ async function start() {
   const server = http.createServer(app);
   initSocket(server);
 
-  server.listen(env.PORT, () => {
+  server.listen(env.PORT, '0.0.0.0',() => {
     console.log(`ctc-bff listening on http://localhost:${env.PORT}`);
   });
 }

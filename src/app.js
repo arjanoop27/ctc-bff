@@ -15,7 +15,7 @@ function createApp() {
   app.use(cookieParser());
   app.use(
     cors({
-      origin: ['http://localhost:4200', 'http://localhost:3000'],
+      origin: true,
       credentials: true,
     }),
   );
